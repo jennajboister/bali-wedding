@@ -188,6 +188,8 @@ section.s .intro{color:var(--muted);margin:12px 0 0}
 form{display:grid;gap:22px;margin-top:28px}
 fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:20px;margin:0;min-width:0}
 legend{font:700 .8rem var(--label);letter-spacing:.3em;text-transform:uppercase;color:var(--hibiscus);padding:0 8px}
+legend .opt{color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:none}
+.welcome-q{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .field{display:grid;gap:6px;min-width:0}
 .field>label,.lbl{font-weight:700;font-size:.9rem}
@@ -1101,36 +1103,34 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
         <legend>Who's coming &amp; dietary needs</legend>
         <div id="guests"></div>
         <div class="btnrow" style="margin-top:16px"><button type="button" class="btn ghost" id="add-guest">+ Add another guest</button></div>
+        <div class="field welcome-q"><span class="lbl">Joining the Welcome Dinner? <span class="hint">(6th July, Jimbaran Beach Cafe)</span></span>
+          <div class="choice">
+            <label><input type="radio" name="welcome" id="f-wel-yes" value="yes"> Yes</label>
+            <label><input type="radio" name="welcome" id="f-wel-no" value="no"> No</label>
+            <label><input type="radio" name="welcome" id="f-wel-unsure" value="unsure"> Unsure</label>
+          </div>
+        </div>
       </fieldset>
 
       <fieldset id="travel-fs">
-        <legend>Travel plans</legend>
+        <legend>Travel plans <span class="opt">(Optional)</span></legend>
         <div class="row">
           <div class="field"><label for="f-arrive">Arriving in Bali <span class="hint">(if you know)</span></label><input type="date" id="f-arrive"></div>
           <div class="field"><label for="f-depart">Leaving Bali</label><input type="date" id="f-depart"></div>
         </div>
-        <div class="row" style="margin-top:14px">
-          <div class="field"><label for="f-stay">Accommodation</label>
-            <select id="f-stay">
-              <option value="">Choose one</option>
-              <option>Planning to stay at the recommended hotel</option>
-              <option>Booking our own place</option>
-              <option>Interested in sharing a villa with others</option>
-              <option>Not sure yet</option>
-            </select>
-          </div>
-          <div class="field"><span class="lbl">Joining the welcome dinner?</span>
-            <div class="choice">
-              <label><input type="radio" name="welcome" id="f-wel-yes" value="yes"> Yes</label>
-              <label><input type="radio" name="welcome" id="f-wel-no" value="no"> No</label>
-              <label><input type="radio" name="welcome" id="f-wel-maybe" value="maybe"> Maybe</label>
-            </div>
-          </div>
+        <div class="field" style="margin-top:14px"><label for="f-stay">Accommodation</label>
+          <select id="f-stay">
+            <option value="">Choose one</option>
+            <option>Planning to stay at the recommended hotel</option>
+            <option>Booking our own place</option>
+            <option>Interested in sharing a villa with others</option>
+            <option>Not sure yet</option>
+          </select>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>The fun bits</legend>
+        <legend>The fun bits <span class="opt">(Optional)</span></legend>
         <div class="field"><label for="f-song">A song that will get you on the dance floor</label><input type="text" id="f-song"></div>
         <div class="field" style="margin-top:14px"><label for="f-msg">Anything else we should know, or a note for us</label><textarea id="f-msg"></textarea></div>
       </fieldset>
@@ -1148,11 +1148,10 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     <h2>FAQ</h2>
     <div style="margin-top:20px">
       <details><summary>Do we have to stay at the recommended hotel?</summary><p>Not at all. It's just the easiest option for transport on the day. Stay wherever suits you.</p></details>
-      <details><summary>Is there a gift registry?</summary><p>Your being there, after the time and cost of travelling to Bali, is the gift. If you'd still like to give something, we'll add wishing-well details here closer to the date.</p></details>
-      <details><summary>Can I bring a plus-one?</summary><p>Please check your invitation. If it's addressed to you "and guest", add them to your RSVP.</p></details>
-      <details><summary>Will there be transport on the day?</summary><p>We're planning shuttles between the venue and the main accommodation areas. Details will be added here once the venue is confirmed.</p></details>
+      <details><summary>Is there a gift registry?</summary><p>Your being there, after the time and cost of travelling to Bali, is the gift.</p></details>
+      <details><summary>How do we get to the wedding venue if we're not staying at the venue?</summary><p>Hotels can organise taxis, we'll provide details of recommended drivers if you've got a large group, or you can download the Grab or Gojek (GoCar) app, Bali's versions of Uber, and easily book a ride!</p></details>
       <details><summary>What if my plans change after I RSVP?</summary><p>Just fill in the RSVP form again using the same email address and we'll update your reply. If it's after the RSVP deadline, please message us directly as well.</p></details>
-      <details><summary>Who do I contact with questions?</summary><p>Message Jenna or Mathew directly, or email <span class="placeholder" data-cfg="contact">[your contact email]</span>.</p></details>
+      <details><summary>Who do I contact with questions?</summary><p>Message Jenna or Mathew directly, or email <span data-cfg="contact">jennajboister@gmail.com</span>.</p></details>
     </div>
   </div>
 </section>
@@ -1243,7 +1242,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     guestsEl.innerHTML=""; gCount=0;
     (d.guests&&d.guests.length?d.guests:[{name:d.name}]).forEach(addGuest);
     $("f-arrive").value=d.arrive||""; $("f-depart").value=d.depart||""; $("f-stay").value=d.stay||"";
-    if(d.welcome) $("f-wel-"+d.welcome).checked=true;
+    {const w=$("f-wel-"+(d.welcome==="maybe"?"unsure":d.welcome)); if(w) w.checked=true;}
     $("f-song").value=d.song||""; $("f-msg").value=d.message||"";
     syncAttending();
   }
@@ -1288,7 +1287,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       let ok=res.ok; try{const j=await res.json(); if(j&&j.ok===false) ok=false}catch(_){}
       if(!ok) throw new Error("not saved");
       try{localStorage.setItem(SAVED,JSON.stringify(d))}catch(_){}
-      showMsg("ok",d.attending==="yes"?"Thank you! Your RSVP is saved. We can't wait to celebrate with you in Bali.":"Thank you for letting us know. We'll miss you and we'll raise a glass to you.");
+      showMsg("ok",d.attending==="yes"?"Thank you! Your RSVP is saved.":"Thank you for letting us know. We'll miss you and we'll raise a glass to you.");
       stateEl.hidden=true; btn.textContent="Update RSVP";
     }catch(ex){
       showFallback(d,"We couldn't save your RSVP just now. Copy it below and send it to us instead, or try again in a minute.");
