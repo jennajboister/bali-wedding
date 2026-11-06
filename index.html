@@ -175,6 +175,25 @@ section.s .intro{color:var(--muted);margin:12px 0 0}
 .note-card h2::after{margin-left:auto;margin-right:auto}
 .note-card p{font-family:var(--body);font-size:1.12rem;line-height:1.7;margin:18px 0 0}
 .note-card p.sig-line{font-family:var(--display);font-size:1.3rem;letter-spacing:.1em;text-transform:uppercase;color:var(--hibiscus);margin-top:22px}
+/* our story */
+.story-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center}
+.story-text p{font-size:1.08rem;line-height:1.75;margin:16px 0 0;max-width:58ch}
+.milestones{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:0;border-left:2px dotted var(--leaf);padding-left:18px}
+.milestones li{position:relative;display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:7px 0;align-items:baseline}
+.milestones li::before{content:"";position:absolute;left:-25px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--hibiscus)}
+.milestones b{font:700 .72rem var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--marigold)}
+.milestones span{color:var(--ink)}
+.story-photos{position:relative;min-height:440px}
+.print{position:absolute;margin:0;background:#FFFDF7;padding:10px 10px 34px;box-shadow:0 18px 30px -18px rgba(74,59,51,.55),0 1px 0 var(--line)}
+.print img{display:block;width:100%;height:auto}
+.print-a{width:78%;top:0;left:0;transform:rotate(-4deg);z-index:1}
+.print-b{width:50%;right:0;bottom:0;transform:rotate(5deg);z-index:2}
+@media (max-width:820px){
+  .story-grid{grid-template-columns:1fr;gap:28px}
+  .story-photos{min-height:0;display:grid;grid-template-columns:1.4fr 1fr;gap:14px;align-items:center;padding:6px}
+  .print{position:static;width:auto;padding:7px 7px 22px}
+  .milestones li{grid-template-columns:90px minmax(0,1fr)}
+}
 .recommended{border-color:var(--marigold)}
 .grid2>.panel:last-child:nth-child(odd){grid-column:1/-1}
 .important .panel{border-top:3px solid var(--hibiscus)}
@@ -962,6 +981,27 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
 </section>
 
 <main>
+
+<section class="s" id="story">
+  <div class="wrap story-grid">
+    <div class="story-text">
+      <h2>A Little Bit About Our Story</h2>
+      <p>We met on the dancefloor of a Gold Coast nightclub in 2009, when Mat was visiting on a boys' weekend. What we both thought was a holiday fling turned into a long-distance relationship, then life in three different states, an eight-year engagement and, finally, two beautiful kids.</p>
+      <p>So we figure it's about time we got hitched!</p>
+      <ol class="milestones">
+        <li><b>2009</b><span>Met on a Gold Coast dancefloor</span></li>
+        <li><b>Then</b><span>Long distance, and three different states</span></li>
+        <li><b>Eight years</b><span>Engaged (no rush)</span></li>
+        <li><b>Two</b><span>Beautiful kids</span></li>
+        <li><b>2027</b><span>Finally getting hitched in Bali</span></li>
+      </ol>
+    </div>
+    <div class="story-photos" aria-label="Photos of Jenna and Mat">
+      <figure class="print print-a"><img src="images/us-vineyard.jpg" alt="Jenna and Mat taking a selfie in front of a vineyard" width="1000" height="612" loading="lazy"></figure>
+      <figure class="print print-b"><img src="images/us-garden.jpg" alt="Jenna and Mat standing together on a garden path" width="591" height="678" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
 
 <section class="s" id="day">
   <div class="wrap">
