@@ -1267,7 +1267,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
   function showMsg(kind,html){const m=$("form-msg");m.className="status "+kind;m.innerHTML=html;m.hidden=false}
 
   /* ===== Sending RSVPs to Google Sheets ===== */
-  const RSVP_ENDPOINT=""; // paste the Google Apps Script web app URL between the quotes
+  const RSVP_ENDPOINT="https://script.google.com/macros/s/AKfycbxFFJ24NAn-VDs0EhFsGksl94Myrvo7a56KSEGeo21Ryott6wf4uvK4x1dpfjxzERJUBg/exec"; // paste the Google Apps Script web app URL between the quotes
   const SAVED="bali-wedding-rsvp";
   const stateEl=$("rsvp-state");
   let saved=null; try{saved=JSON.parse(localStorage.getItem(SAVED)||"null")}catch(e){}
