@@ -194,6 +194,25 @@ section.s .intro{color:var(--muted);margin:12px 0 0}
   .print{position:static;width:auto;padding:7px 7px 22px}
   .milestones li{grid-template-columns:90px minmax(0,1fr)}
 }
+/* photo gallery */
+.gallery{columns:4 220px;column-gap:22px;margin-top:44px}
+.snap{break-inside:avoid;margin:0 0 22px;display:block}
+.snap-btn{display:block;width:100%;padding:8px 8px 26px;border:0;background:#FFFDF7;cursor:zoom-in;box-shadow:0 14px 24px -16px rgba(74,59,51,.55),0 1px 0 var(--line);transition:transform .25s ease}
+.snap-btn img{display:block;width:100%;height:auto}
+.snap:nth-child(4n+1) .snap-btn{transform:rotate(-2deg)}
+.snap:nth-child(4n+2) .snap-btn{transform:rotate(1.5deg)}
+.snap:nth-child(4n+3) .snap-btn{transform:rotate(-1deg)}
+.snap:nth-child(4n) .snap-btn{transform:rotate(2deg)}
+.snap-btn:hover,.snap-btn:focus-visible{transform:rotate(0) scale(1.03)}
+.lightbox{border:0;padding:0;background:transparent;max-width:min(92vw,1000px);max-height:90vh;overflow:visible}
+.lightbox::backdrop{background:rgba(35,27,23,.85)}
+.lightbox img{display:block;max-width:min(92vw,1000px);max-height:86vh;width:auto;height:auto;border:8px solid #FFFDF7}
+.lb-close,.lb-nav{position:absolute;border:0;background:#FFFDF7;color:#4A3B33;width:42px;height:42px;border-radius:50%;font:400 1.6rem/1 var(--body);cursor:pointer;display:grid;place-items:center}
+.lb-close{top:-16px;right:-16px}
+.lb-nav{top:50%;transform:translateY(-50%)}
+.lb-prev{left:-20px}.lb-next{right:-20px}
+@media (max-width:600px){.gallery{columns:2;column-gap:12px}.snap{margin-bottom:12px}.snap-btn{padding:5px 5px 16px}.lb-prev{left:6px}.lb-next{right:6px}.lb-close{top:6px;right:6px}}
+@media (prefers-reduced-motion:reduce){.snap-btn{transition:none}}
 .recommended{border-color:var(--marigold)}
 .grid2>.panel:last-child:nth-child(odd){grid-column:1/-1}
 .important .panel{border-top:3px solid var(--hibiscus)}
@@ -1001,6 +1020,28 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       <figure class="print print-b"><img src="images/us-garden.jpg" alt="Jenna and Mat standing together on a garden path" width="591" height="678" loading="lazy"></figure>
     </div>
   </div>
+
+  <div class="wrap">
+    <div class="gallery" id="gallery">
+        <figure class="snap"><button type="button" class="snap-btn" data-i="0" aria-label="View larger: Mat and Jenna cuddled up at an evening event"><img src="images/night-out.jpg" alt="Mat and Jenna cuddled up at an evening event" width="834" height="900" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="1" aria-label="View larger: Jenna and Mat in front of a waterfall"><img src="images/waterfall.jpg" alt="Jenna and Mat in front of a waterfall" width="900" height="556" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="2" aria-label="View larger: Jenna and Mat taking a selfie on a mountain top above the ocean"><img src="images/mountain.jpg" alt="Jenna and Mat taking a selfie on a mountain top above the ocean" width="900" height="598" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="3" aria-label="View larger: Mat and Jenna dressed up for an occasion"><img src="images/dressed-up.jpg" alt="Mat and Jenna dressed up for an occasion" width="773" height="602" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="4" aria-label="View larger: Mat and Jenna on the Las Vegas Strip at night"><img src="images/las-vegas.jpg" alt="Mat and Jenna on the Las Vegas Strip at night" width="899" height="900" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="5" aria-label="View larger: Jenna and Mat laughing by the ocean"><img src="images/ocean.jpg" alt="Jenna and Mat laughing by the ocean" width="900" height="661" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="6" aria-label="View larger: Mat and Jenna in front of the Eiffel Tower"><img src="images/paris.jpg" alt="Mat and Jenna in front of the Eiffel Tower" width="740" height="900" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="7" aria-label="View larger: Jenna and Mat on a coastal walk with their baby daughter"><img src="images/coast-walk.jpg" alt="Jenna and Mat on a coastal walk with their baby daughter" width="900" height="849" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="8" aria-label="View larger: Jenna and Mat with their newborn and toddler daughters"><img src="images/family.jpg" alt="Jenna and Mat with their newborn and toddler daughters" width="900" height="669" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="9" aria-label="View larger: Mat, Jenna and their two girls in a Bali hotel lobby"><img src="images/bali-family.jpg" alt="Mat, Jenna and their two girls in a Bali hotel lobby" width="900" height="688" loading="lazy"></button></figure>
+        <figure class="snap"><button type="button" class="snap-btn" data-i="10" aria-label="View larger: The whole family wearing Bluey ears"><img src="images/bluey.jpg" alt="The whole family wearing Bluey ears" width="900" height="661" loading="lazy"></button></figure>
+    </div>
+  </div>
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+    <button type="button" class="lb-close" id="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">‹</button>
+    <img id="lb-img" alt="">
+    <button type="button" class="lb-nav lb-next" id="lb-next" aria-label="Next photo">›</button>
+  </dialog>
 </section>
 
 <section class="s" id="day">
@@ -1346,6 +1387,21 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       msgEl.textContent="Selected. Press Ctrl/Cmd + C to copy.";
     }
   }
+})();
+</script>
+
+<script>
+(function(){
+  const btns=[...document.querySelectorAll(".snap-btn")], dlg=document.getElementById("lightbox"), img=document.getElementById("lb-img");
+  if(!dlg||!dlg.showModal) return;
+  let cur=0;
+  function show(i){cur=(i+btns.length)%btns.length; const s=btns[cur].querySelector("img"); img.src=s.src; img.alt=s.alt}
+  btns.forEach((b,i)=>b.addEventListener("click",()=>{show(i);dlg.showModal()}));
+  document.getElementById("lb-close").addEventListener("click",()=>dlg.close());
+  document.getElementById("lb-prev").addEventListener("click",()=>show(cur-1));
+  document.getElementById("lb-next").addEventListener("click",()=>show(cur+1));
+  dlg.addEventListener("click",e=>{if(e.target===dlg) dlg.close()});
+  dlg.addEventListener("keydown",e=>{if(e.key==="ArrowLeft") show(cur-1); if(e.key==="ArrowRight") show(cur+1)});
 })();
 </script>
 </body>
