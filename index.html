@@ -1276,7 +1276,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       <div class="row">
         <div class="field"><label for="g${i}-name">Full name</label><input type="text" id="g${i}-name" data-k="name" value="${esc(g.name)}"></div>
         <div class="field"><label for="g${i}-age">Adult or child</label>
-          <select id="g${i}-age" data-k="age"><option value="adult">Adult</option><option value="child">Child (under 12)</option><option value="teen">Teen (12–17)</option></select></div>
+          <select id="g${i}-age" data-k="age"><option value="adult">Adult</option><option value="child">Child (under 10)</option><option value="teen">Teen (10–17)</option></select></div>
       </div>
       <div class="field"><span class="lbl">Dietary requirements</span>
         <div class="chips">${DIETS.map((d,j)=>`<label><input type="checkbox" id="g${i}-d${j}" value="${d}" ${ (g.diet||[]).includes(d)?"checked":""}> ${d}</label>`).join("")}</div></div>

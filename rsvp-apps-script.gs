@@ -47,7 +47,7 @@ function doPost(e) {
       d.arrive, d.depart, d.stay, d.welcome, d.song, d.message].map(clean));
 
     list.forEach(g => guests.appendRow([now, key, d.name, g.name,
-      { adult: 'Adult', teen: 'Teen (12–17)', child: 'Child (under 12)' }[g.age] || g.age,
+      { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (under 10)' }[g.age] || g.age,
       (g.diet || []).join(', '), g.notes].map(clean)));
 
     return json({ ok: true });
