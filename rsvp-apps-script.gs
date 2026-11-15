@@ -15,7 +15,7 @@ const GUEST_TAB = 'Guests';
 
 const RSVP_HEADERS = ['Updated', 'Key', 'Name', 'Email', 'Mobile', 'Attending',
   'Adults', 'Teens', 'Children', 'Guest names', 'Arriving', 'Leaving',
-  'Accommodation', 'Welcome dinner', 'Song request', 'Message'];
+  'Accommodation', 'Welcome dinner', 'Song request', 'Message', 'Bucks party', 'Hens party'];
 
 const GUEST_HEADERS = ['Updated', 'Key', 'RSVP from', 'Guest name', 'Age group',
   'Dietary requirements', 'Allergies / other needs'];
@@ -44,7 +44,7 @@ function doPost(e) {
       d.attending === 'yes' ? 'Yes' : 'No',
       count('adult'), count('teen'), count('child'),
       list.map(g => g.name).join(', '),
-      d.arrive, d.depart, d.stay, d.welcome, d.song, d.message].map(clean));
+      d.arrive, d.depart, d.stay, d.welcome, d.song, d.message, d.bucks, d.hens].map(clean));
 
     list.forEach(g => guests.appendRow([now, key, d.name, g.name,
       { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (under 10)' }[g.age] || g.age,
@@ -70,6 +70,9 @@ function tab(ss, name, headers) {
     sh.appendRow(headers);
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  } else if (sh.getLastColumn() < headers.length) {
+    // the form has gained questions since the tab was made: add the new column headings
+    sh.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
   }
   return sh;
 }

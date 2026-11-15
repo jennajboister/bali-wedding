@@ -229,6 +229,7 @@ fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--su
 legend{font:700 .8rem var(--label);letter-spacing:.3em;text-transform:uppercase;color:var(--hibiscus);padding:0 8px}
 legend .opt{color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:none}
 .welcome-q{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
+.extra-q{margin-top:18px}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .field{display:grid;gap:6px;min-width:0}
 .field>label,.lbl{font-weight:700;font-size:.9rem}
@@ -1193,6 +1194,20 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
             <label><input type="radio" name="welcome" id="f-wel-unsure" value="unsure"> Unsure</label>
           </div>
         </div>
+        <div class="field extra-q"><span class="lbl">Joining the Bucks party? <span class="hint">(7th July)</span></span>
+          <div class="choice">
+            <label><input type="radio" name="bucks" id="f-buck-yes" value="yes"> Yes</label>
+            <label><input type="radio" name="bucks" id="f-buck-no" value="no"> No</label>
+            <label><input type="radio" name="bucks" id="f-buck-unsure" value="unsure"> Unsure</label>
+          </div>
+        </div>
+        <div class="field extra-q"><span class="lbl">Joining the Hens party? <span class="hint">(8th July)</span></span>
+          <div class="choice">
+            <label><input type="radio" name="hens" id="f-hen-yes" value="yes"> Yes</label>
+            <label><input type="radio" name="hens" id="f-hen-no" value="no"> No</label>
+            <label><input type="radio" name="hens" id="f-hen-unsure" value="unsure"> Unsure</label>
+          </div>
+        </div>
       </fieldset>
 
       <fieldset id="travel-fs">
@@ -1306,6 +1321,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
   function collect(){
     const att=document.querySelector("input[name=attending]:checked");
     const wel=document.querySelector("input[name=welcome]:checked");
+    const pick=n=>{const r=document.querySelector("input[name="+n+"]:checked");return r?r.value:""};
     const guests=[...guestsEl.querySelectorAll(".guest")].map(g=>({
       name:g.querySelector("[data-k=name]").value.trim(),
       age:g.querySelector("[data-k=age]").value,
@@ -1316,7 +1332,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       name:$("f-name").value.trim(), email:$("f-email").value.trim(), phone:$("f-phone").value.trim(),
       attending:att?att.value:"", guests: att&&att.value==="yes"?guests:[],
       arrive:$("f-arrive").value, depart:$("f-depart").value, stay:$("f-stay").value,
-      welcome:wel?wel.value:"", song:$("f-song").value.trim(), message:$("f-msg").value.trim()
+      welcome:wel?wel.value:"", bucks:pick("bucks"), hens:pick("hens"), song:$("f-song").value.trim(), message:$("f-msg").value.trim()
     };
   }
   function fill(d){
@@ -1326,6 +1342,8 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     (d.guests&&d.guests.length?d.guests:[{name:d.name}]).forEach(addGuest);
     $("f-arrive").value=d.arrive||""; $("f-depart").value=d.depart||""; $("f-stay").value=d.stay||"";
     {const w=$("f-wel-"+(d.welcome==="maybe"?"unsure":d.welcome)); if(w) w.checked=true;}
+    {const b=$("f-buck-"+d.bucks); if(b) b.checked=true;}
+    {const h=$("f-hen-"+d.hens); if(h) h.checked=true;}
     $("f-song").value=d.song||""; $("f-msg").value=d.message||"";
     syncAttending();
   }
@@ -1342,6 +1360,8 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     if(d.arrive||d.depart) lines.push(`Dates in Bali: ${d.arrive||"?"} to ${d.depart||"?"}`);
     if(d.stay) lines.push(`Accommodation: ${d.stay}`);
     if(d.welcome) lines.push(`Welcome dinner: ${d.welcome}`);
+    if(d.bucks) lines.push(`Bucks party: ${d.bucks}`);
+    if(d.hens) lines.push(`Hens party: ${d.hens}`);
     if(d.song) lines.push(`Song request: ${d.song}`);
     if(d.message) lines.push(`Note: ${d.message}`);
     return lines.join("\n");
