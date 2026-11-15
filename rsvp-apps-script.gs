@@ -47,7 +47,7 @@ function doPost(e) {
       d.arrive, d.depart, d.stay, d.welcome, d.song, d.message, d.bucks, d.hens, d.welcomeAdults, d.welcomeKids, count('infant')].map(clean));
 
     list.forEach(g => guests.appendRow([now, key, d.name, g.name,
-      { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (6–9)', infant: 'Infant/Toddler (0–5)' }[g.age] || g.age,
+      { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (5–10)', infant: 'Infant/Toddler (0–5)' }[g.age] || g.age,
       (g.diet || []).join(', '), g.notes].map(clean)));
 
     return json({ ok: true });
