@@ -1297,7 +1297,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       <div class="row">
         <div class="field"><label for="g${i}-name">Full name</label><input type="text" id="g${i}-name" data-k="name" value="${esc(g.name)}"></div>
         <div class="field"><label for="g${i}-age">Adult or child</label>
-          <select id="g${i}-age" data-k="age"><option value="adult">Adult</option><option value="child">Child (under 10)</option><option value="teen">Teen (10–17)</option></select></div>
+          <select id="g${i}-age" data-k="age"><option value="adult">Adult</option><option value="teen">Teen (10–17)</option><option value="child">Child (6–9)</option><option value="infant">Infant/Toddler (0–5 years)</option></select></div>
       </div>
       <div class="field"><span class="lbl">Dietary requirements</span>
         <div class="chips">${DIETS.map((d,j)=>`<label><input type="checkbox" id="g${i}-d${j}" value="${d}" ${ (g.diet||[]).includes(d)?"checked":""}> ${d}</label>`).join("")}</div></div>
@@ -1324,8 +1324,8 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     const show=!!w&&w.value!=="no"; $("wel-count").hidden=!show;
     if(show&&$("f-wel-adults").value==="0"&&$("f-wel-kids").value==="0"){
       const gs=[...document.querySelectorAll("#guests .guest")];
-      $("f-wel-adults").value=String(Math.min(10,gs.filter(g=>g.querySelector("[data-k=age]").value!=="child").length||1));
-      $("f-wel-kids").value=String(Math.min(10,gs.filter(g=>g.querySelector("[data-k=age]").value==="child").length));
+      $("f-wel-adults").value=String(Math.min(10,gs.filter(g=>!["child","infant"].includes(g.querySelector("[data-k=age]").value)).length||1));
+      $("f-wel-kids").value=String(Math.min(10,gs.filter(g=>["child","infant"].includes(g.querySelector("[data-k=age]").value)).length));
     }
   }
   document.querySelectorAll("input[name=welcome]").forEach(r=>r.addEventListener("change",syncWelcome));

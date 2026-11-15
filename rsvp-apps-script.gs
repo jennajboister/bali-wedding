@@ -15,7 +15,7 @@ const GUEST_TAB = 'Guests';
 
 const RSVP_HEADERS = ['Updated', 'Key', 'Name', 'Email', 'Mobile', 'Attending',
   'Adults', 'Teens', 'Children', 'Guest names', 'Arriving', 'Leaving',
-  'Accommodation', 'Welcome dinner', 'Song request', 'Message', 'Bucks party', 'Hens party', 'Welcome dinner adults', 'Welcome dinner kids'];
+  'Accommodation', 'Welcome dinner', 'Song request', 'Message', 'Bucks party', 'Hens party', 'Welcome dinner adults', 'Welcome dinner kids', 'Infants/toddlers'];
 
 const GUEST_HEADERS = ['Updated', 'Key', 'RSVP from', 'Guest name', 'Age group',
   'Dietary requirements', 'Allergies / other needs'];
@@ -44,10 +44,10 @@ function doPost(e) {
       d.attending === 'yes' ? 'Yes' : 'No',
       count('adult'), count('teen'), count('child'),
       list.map(g => g.name).join(', '),
-      d.arrive, d.depart, d.stay, d.welcome, d.song, d.message, d.bucks, d.hens, d.welcomeAdults, d.welcomeKids].map(clean));
+      d.arrive, d.depart, d.stay, d.welcome, d.song, d.message, d.bucks, d.hens, d.welcomeAdults, d.welcomeKids, count('infant')].map(clean));
 
     list.forEach(g => guests.appendRow([now, key, d.name, g.name,
-      { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (under 10)' }[g.age] || g.age,
+      { adult: 'Adult', teen: 'Teen (10–17)', child: 'Child (6–9)', infant: 'Infant/Toddler (0–5)' }[g.age] || g.age,
       (g.diet || []).join(', '), g.notes].map(clean)));
 
     return json({ ok: true });
