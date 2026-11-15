@@ -230,6 +230,8 @@ legend{font:700 .8rem var(--label);letter-spacing:.3em;text-transform:uppercase;
 legend .opt{color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:none}
 .welcome-q{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
 .extra-q{margin-top:18px}
+.wel-count{margin-top:12px;max-width:420px}
+.wel-count select{width:100%}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .field{display:grid;gap:6px;min-width:0}
 .field>label,.lbl{font-weight:700;font-size:.9rem}
@@ -1193,6 +1195,10 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
             <label><input type="radio" name="welcome" id="f-wel-no" value="no"> No</label>
             <label><input type="radio" name="welcome" id="f-wel-unsure" value="unsure"> Unsure</label>
           </div>
+          <div class="row wel-count" id="wel-count" hidden>
+            <div class="field"><label for="f-wel-adults">How many adults?</label><select id="f-wel-adults"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+            <div class="field"><label for="f-wel-kids">How many kids?</label><select id="f-wel-kids"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+          </div>
         </div>
         <div class="field extra-q"><span class="lbl">Joining the Bucks party? <span class="hint">(7th July)</span></span>
           <div class="choice">
@@ -1313,6 +1319,16 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
   }
   $("f-att-yes").addEventListener("change",syncAttending);
   $("f-att-no").addEventListener("change",syncAttending);
+  function syncWelcome(){
+    const w=document.querySelector("input[name=welcome]:checked");
+    const show=!!w&&w.value!=="no"; $("wel-count").hidden=!show;
+    if(show&&$("f-wel-adults").value==="0"&&$("f-wel-kids").value==="0"){
+      const gs=[...document.querySelectorAll("#guests .guest")];
+      $("f-wel-adults").value=String(Math.min(10,gs.filter(g=>g.querySelector("[data-k=age]").value!=="child").length||1));
+      $("f-wel-kids").value=String(Math.min(10,gs.filter(g=>g.querySelector("[data-k=age]").value==="child").length));
+    }
+  }
+  document.querySelectorAll("input[name=welcome]").forEach(r=>r.addEventListener("change",syncWelcome));
   $("f-name").addEventListener("input",()=>{
     const first=guestsEl.querySelector(".guest [data-k=name]");
     if(first&&(!first.value||first.dataset.auto)){first.value=$("f-name").value;first.dataset.auto="1"}
@@ -1332,7 +1348,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
       name:$("f-name").value.trim(), email:$("f-email").value.trim(), phone:$("f-phone").value.trim(),
       attending:att?att.value:"", guests: att&&att.value==="yes"?guests:[],
       arrive:$("f-arrive").value, depart:$("f-depart").value, stay:$("f-stay").value,
-      welcome:wel?wel.value:"", bucks:pick("bucks"), hens:pick("hens"), song:$("f-song").value.trim(), message:$("f-msg").value.trim()
+      welcome:wel?wel.value:"", welcomeAdults:(wel&&wel.value!=="no")?$("f-wel-adults").value:"", welcomeKids:(wel&&wel.value!=="no")?$("f-wel-kids").value:"", bucks:pick("bucks"), hens:pick("hens"), song:$("f-song").value.trim(), message:$("f-msg").value.trim()
     };
   }
   function fill(d){
@@ -1342,6 +1358,9 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     (d.guests&&d.guests.length?d.guests:[{name:d.name}]).forEach(addGuest);
     $("f-arrive").value=d.arrive||""; $("f-depart").value=d.depart||""; $("f-stay").value=d.stay||"";
     {const w=$("f-wel-"+(d.welcome==="maybe"?"unsure":d.welcome)); if(w) w.checked=true;}
+    if(d.welcomeAdults) $("f-wel-adults").value=d.welcomeAdults;
+    if(d.welcomeKids) $("f-wel-kids").value=d.welcomeKids;
+    syncWelcome();
     {const b=$("f-buck-"+d.bucks); if(b) b.checked=true;}
     {const h=$("f-hen-"+d.hens); if(h) h.checked=true;}
     $("f-song").value=d.song||""; $("f-msg").value=d.message||"";
@@ -1359,7 +1378,7 @@ body.editing .url-input{display:block;width:100%;font:inherit;font-size:.85rem;c
     d.guests.forEach((g,i)=>lines.push(`Guest ${i+1}: ${g.name} (${g.age})${g.diet.length?" – "+g.diet.join(", "):""}${g.notes?" – "+g.notes:""}`));
     if(d.arrive||d.depart) lines.push(`Dates in Bali: ${d.arrive||"?"} to ${d.depart||"?"}`);
     if(d.stay) lines.push(`Accommodation: ${d.stay}`);
-    if(d.welcome) lines.push(`Welcome dinner: ${d.welcome}`);
+    if(d.welcome) lines.push(`Welcome dinner: ${d.welcome}${d.welcomeAdults||d.welcomeKids?` (${d.welcomeAdults||0} adults, ${d.welcomeKids||0} kids)`:""}`);
     if(d.bucks) lines.push(`Bucks party: ${d.bucks}`);
     if(d.hens) lines.push(`Hens party: ${d.hens}`);
     if(d.song) lines.push(`Song request: ${d.song}`);
